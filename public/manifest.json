@@ -1,7 +1,7 @@
 {
-  "name": "七卡瓦拼豆底稿生成器",
-  "short_name": "七卡瓦",
-  "description": "七卡瓦拼豆底稿生成器，让你轻松制作精美的像素画作品",
+  "name": "阴阳师拼豆图纸生成器",
+  "short_name": "阴阳师拼豆",
+  "description": "将阴阳师立绘转换为 29×29 标准底板拼豆图纸",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#E8F4FD",

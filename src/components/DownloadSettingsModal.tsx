@@ -96,7 +96,7 @@ const DownloadSettingsModal: React.FC<DownloadSettingsModalProps> = ({
                     <input 
                       type="range" 
                       min="5" 
-                      max="20" 
+                      max="29"
                       step="1"
                       value={tempOptions.gridInterval}
                       onChange={(e) => handleOptionChange('gridInterval', parseInt(e.target.value))}
@@ -105,6 +105,20 @@ const DownloadSettingsModal: React.FC<DownloadSettingsModalProps> = ({
                     <span className="flex items-center justify-center min-w-[40px] text-sm font-medium text-gray-900 dark:text-gray-100">
                       {tempOptions.gridInterval}
                     </span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[10, 20, 29].map(interval => (
+                      <button
+                        key={interval}
+                        type="button"
+                        onClick={() => handleOptionChange('gridInterval', interval)}
+                        className={`rounded-md border px-2 py-1 text-xs ${tempOptions.gridInterval === interval
+                          ? 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
+                          : 'border-gray-200 dark:border-gray-600'}`}
+                      >
+                        {interval === 29 ? '底板线 29格' : `${interval} 格`}
+                      </button>
+                    ))}
                   </div>
                 </div>
 

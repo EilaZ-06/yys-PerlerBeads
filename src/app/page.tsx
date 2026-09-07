@@ -94,13 +94,12 @@ import { loadPaletteSelections, savePaletteSelections, presetToSelections, Palet
 import { TRANSPARENT_KEY, transparentColorData } from '../utils/pixelEditingUtils';
 
 // 1. 导入新的 DonationModal 组件
-import DonationModal from '../components/DonationModal';
 import FocusModePreDownloadModal from '../components/FocusModePreDownloadModal';
 
 export default function Home() {
   const [originalImageSrc, setOriginalImageSrc] = useState<string | null>(null);
-  const [granularity, setGranularity] = useState<number>(50);
-  const [granularityInput, setGranularityInput] = useState<string>("50");
+  const [granularity, setGranularity] = useState<number>(87);
+  const [granularityInput, setGranularityInput] = useState<string>("87");
   const [similarityThreshold, setSimilarityThreshold] = useState<number>(30);
   const [similarityThresholdInput, setSimilarityThresholdInput] = useState<string>("30");
   // 添加像素化模式状态
@@ -127,8 +126,6 @@ export default function Home() {
   const [selectedColor, setSelectedColor] = useState<MappedPixel | null>(null);
   // 新增：一键擦除模式状态
   const [isEraseMode, setIsEraseMode] = useState<boolean>(false);
-  // 新增状态变量：控制打赏弹窗
-  const [isDonationModalOpen, setIsDonationModalOpen] = useState<boolean>(false);
   const [customPaletteSelections, setCustomPaletteSelections] = useState<PaletteSelections>({});
   const [isCustomPaletteEditorOpen, setIsCustomPaletteEditorOpen] = useState<boolean>(false);
   const [isCustomPalette, setIsCustomPalette] = useState<boolean>(false);
@@ -137,7 +134,7 @@ export default function Home() {
   const [isDownloadSettingsOpen, setIsDownloadSettingsOpen] = useState<boolean>(false);
   const [downloadOptions, setDownloadOptions] = useState<GridDownloadOptions>({
     showGrid: true,
-    gridInterval: 10,
+    gridInterval: 29,
     showCoordinates: true,
     showCellNumbers: true,
     gridLineColor: gridLineColorOptions[0].value,
@@ -745,6 +742,15 @@ export default function Home() {
     setGranularityInput(event.target.value);
   };
 
+  const handleBoardPreset = (size: 29 | 58 | 87) => {
+    setGranularity(size);
+    setGranularityInput(size.toString());
+    setDownloadOptions(prev => ({ ...prev, gridInterval: 29 }));
+    setRemapTrigger(prev => prev + 1);
+    setIsManualColoringMode(false);
+    setSelectedColor(null);
+  };
+
   // ++ 添加：处理相似度输入框变化的函数 ++
   const handleSimilarityThresholdInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSimilarityThresholdInput(event.target.value);
@@ -1104,56 +1110,6 @@ export default function Home() {
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
-  // 强制显示专业工作台弹窗（每次进入页面都弹，引导用户前往新版）
-  useEffect(() => {
-    setShowDesktopModal(true);
-  }, []);
-
-  // 添加URL重定向检查
-  useEffect(() => {
-    // 检查是否在浏览器环境中
-    if (typeof window !== 'undefined') {
-      const currentUrl = window.location.href;
-      const currentHostname = window.location.hostname;
-      const targetDomain = 'https://perlerbeadsold.zippland.com/';
-      
-      // 排除localhost和127.0.0.1等本地开发环境
-      const isLocalhost = currentHostname === 'localhost' || 
-                         currentHostname === '127.0.0.1' || 
-                         currentHostname.startsWith('192.168.') ||
-                         currentHostname.startsWith('10.') ||
-                         currentHostname.endsWith('.local');
-      
-      // 检查当前URL是否不是目标域名，且不是本地开发环境
-      if (!currentUrl.startsWith(targetDomain) && !isLocalhost) {
-        console.log(`当前URL: ${currentUrl}`);
-        console.log(`目标URL: ${targetDomain}`);
-        console.log('正在重定向到官方域名...');
-        
-        // 保留当前路径和查询参数
-        const currentPath = window.location.pathname;
-        const currentSearch = window.location.search;
-        const currentHash = window.location.hash;
-        
-        // 构建完整的目标URL
-        let redirectUrl = targetDomain;
-        
-        // 如果不是根路径，添加路径
-        if (currentPath && currentPath !== '/') {
-          redirectUrl = redirectUrl.replace(/\/$/, '') + currentPath;
-        }
-        
-        // 添加查询参数和哈希
-        redirectUrl += currentSearch + currentHash;
-        
-        // 执行重定向
-        window.location.replace(redirectUrl);
-      } else if (isLocalhost) {
-        console.log(`检测到本地开发环境 (${currentHostname})，跳过重定向`);
-      }
-    }
-  }, []); // 只在组件首次挂载时执行
 
     // --- Download function (ensure filename includes palette) ---
     const handleDownloadRequest = (options?: GridDownloadOptions) => {
@@ -2013,7 +1969,7 @@ export default function Home() {
     />
 
     {/* Apply dark mode styles to the main container */}
-    <div className="min-h-screen p-4 sm:p-6 flex flex-col items-center bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 font-[family-name:var(--font-geist-sans)] overflow-x-hidden">
+    <div className="min-h-screen p-4 sm:p-6 flex flex-col items-center bg-[radial-gradient(circle_at_top,#fff7e6_0%,#fffdf8_42%,#f5ead7_100%)] dark:bg-[radial-gradient(circle_at_top,#33251d_0%,#171312_55%,#0f0d0c_100%)] font-[family-name:var(--font-geist-sans)] overflow-x-hidden">
       {/* Apply dark mode styles to the header */}
       <header className="w-full md:max-w-4xl text-center mt-6 mb-8 sm:mt-8 sm:mb-10 relative overflow-hidden">
         {/* Adjust decorative background colors for dark mode */}
@@ -2081,8 +2037,8 @@ export default function Home() {
             <div className="relative flex flex-col items-center space-y-3">
               {/* Brand name - 七卡瓦 with ultra fancy effects */}
               <div className="relative">
-                <h1 className="relative text-4xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 via-blue-500 to-cyan-400 tracking-wider drop-shadow-2xl transform hover:scale-105 transition-transform duration-300">
-                  七卡瓦
+                <h1 className="relative text-4xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-800 via-red-600 to-amber-500 tracking-wider drop-shadow-2xl transform hover:scale-105 transition-transform duration-300">
+                  阴阳师拼豆图纸生成器
                 </h1>
                 
                 {/* Super fancy geometric decorations */}
@@ -2104,9 +2060,8 @@ export default function Home() {
               
               {/* Tool name - 拼豆底稿生成器 with hyper cute style */}
               <div className="relative">
-                <h2 className="relative text-xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-teal-500 via-green-500 to-emerald-400 tracking-widest transform hover:scale-102 transition-all duration-300">
-                  拼豆底稿生成器
-                  <span className="text-xs font-normal text-gray-400 dark:text-gray-500 tracking-widest ml-1 align-middle">竖屏版</span>
+                <h2 className="relative text-base sm:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-700 via-yellow-600 to-red-700 tracking-[0.2em] transform hover:scale-102 transition-all duration-300">
+                  一张立绘 · 九块底板 · 逐格精修
                 </h2>
                 
                 {/* Super cute geometric shapes */}
@@ -2155,7 +2110,7 @@ export default function Home() {
           </div>
           {/* Slogan */}
           <p className="mt-3 text-sm sm:text-base font-light text-gray-500 dark:text-gray-400 text-center tracking-[0.15em]">
-            让像素创意属于每一个人
+            上传阴阳师立绘，生成可编辑、可打印的标准底板图纸
           </p>
 
           {/* 横屏设备弹窗 */}
@@ -2203,7 +2158,7 @@ export default function Home() {
           )}
 
           {/* 链接行：专业工作台· 小红书 · GitHub */}
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5 text-xs">
+          <div className="hidden mt-4 flex-wrap items-center justify-center gap-2.5 text-xs">
             <a href="https://perlerbeads.zippland.com/" target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-1 text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
                 <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v8a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm1 0v8h12V4H4zm-1 12a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
@@ -2227,7 +2182,7 @@ export default function Home() {
             </a>
           </div>
           {/* 来源提示 */}
-          <p className="mt-2 text-[10px] text-gray-400 dark:text-gray-500">发布平台请标注来源或保留图片水印及标识</p>
+          <p className="mt-3 text-xs text-amber-800/70 dark:text-amber-200/70">支持 MARD 等 5 套色卡 · 图纸留在浏览器本地处理</p>
         </div>
       </header>
 
@@ -2290,6 +2245,25 @@ export default function Home() {
                       min="10"
                       max="300"
                     />
+                  </div>
+                  <div className="mt-2 grid grid-cols-3 gap-2">
+                    {[
+                      { size: 29 as const, label: '1块', detail: '29×29' },
+                      { size: 58 as const, label: '4块', detail: '58×58' },
+                      { size: 87 as const, label: '9块', detail: '87×87' },
+                    ].map(preset => (
+                      <button
+                        key={preset.size}
+                        type="button"
+                        onClick={() => handleBoardPreset(preset.size)}
+                        className={`rounded-lg border px-2 py-2 text-xs transition-colors ${granularity === preset.size
+                          ? 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200'
+                          : 'border-gray-200 bg-white text-gray-600 hover:border-amber-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300'}`}
+                      >
+                        <span className="block font-semibold">{preset.label}</span>
+                        <span className="block opacity-75">{preset.detail}</span>
+                      </button>
+                    ))}
                   </div>
                 </div>
 
@@ -2767,31 +2741,11 @@ export default function Home() {
       {/* Apply dark mode styles to the Footer */}
       <footer className="w-full md:max-w-4xl mt-10 mb-6 py-6 text-center text-xs sm:text-sm text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800/50 rounded-lg shadow-inner">
 
-        {/* Donation button styles are likely fine */}
-        <button
-          onClick={() => setIsDonationModalOpen(true)}
-          className="mb-5 px-6 py-2.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-full shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px] flex items-center justify-center mx-auto"
-        >
-          {/* SVG and Text inside button */}
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M18 8h1a2 2 0 0 1 2 2v1c0 1.1-.9 2-2 2h-1" fill="#f9a8d4" />
-            <path d="M6 8h12v9a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3V8z" fill="#f9a8d4" />
-            <path d="M6 8V7a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v1" fill="#f472b6" />
-            <path d="M12 16v-4" stroke="#7d2a5a" />
-            <path d="M9.5 14.5L9 16" stroke="#7d2a5a" />
-            <path d="M14.5 14.5L15 16" stroke="#7d2a5a" />
-          </svg>
-          <span>请作者喝一杯奶茶</span>
-        </button>
-
         {/* Copyright text color */}
         <p className="font-medium text-gray-600 dark:text-gray-300">
-          七卡瓦 拼豆底稿生成器 &copy; {new Date().getFullYear()}
+          阴阳师拼豆图纸生成器 &copy; {new Date().getFullYear()}
         </p>
       </footer>
-
-      {/* Donation Modal - 现在使用新的组件 */}
-      <DonationModal isOpen={isDonationModalOpen} onClose={() => setIsDonationModalOpen(false)} />
 
       {/* 使用导入的下载设置弹窗组件 */}
       <DownloadSettingsModal 

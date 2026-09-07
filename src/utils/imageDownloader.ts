@@ -398,14 +398,14 @@ export async function downloadImage({
     const titleStartX = brandBlockWidth + titleBarHeight * 0.3;
     const mainTitleY = titleBarHeight * 0.4;
     
-    ctx.fillText('七卡瓦', titleStartX, mainTitleY);
+    ctx.fillText('阴阳师拼豆图纸生成器', titleStartX, mainTitleY);
     
     // 5. 副标题 - 功能说明
     ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
     ctx.font = `400 ${subTitleFontSize}px system-ui, -apple-system, sans-serif`;
     const subTitleY = titleBarHeight * 0.65;
     
-    ctx.fillText('拼豆图纸生成工具', titleStartX, subTitleY);
+    ctx.fillText('阴阳师拼豆图纸生成工具', titleStartX, subTitleY);
     
     
     
@@ -621,7 +621,7 @@ export async function downloadImage({
 
     // 副水印：放在网格左上角，简洁版本
     const secondaryWatermarkFontSize = Math.max(10, Math.floor(downloadCellSize * 0.5));
-    const secondaryText = '@七卡瓦';
+    const secondaryText = '阴阳师拼豆图纸生成器';
     
     ctx.font = `500 ${secondaryWatermarkFontSize}px system-ui, -apple-system, sans-serif`;
     const secondaryMetrics = ctx.measureText(secondaryText);
@@ -747,7 +747,7 @@ export async function downloadImage({
       
       // 统计区域水印 - 第三重保护，清晰明显
       const statsWatermarkFontSize = Math.max(10, Math.floor(statsFontSize * 0.7));
-      const statsWatermarkText = '图纸来源：小红书@七卡瓦';
+      const statsWatermarkText = '图纸生成：阴阳师拼豆图纸生成器';
       
       ctx.font = `500 ${statsWatermarkFontSize}px system-ui, -apple-system, sans-serif`;
       const statsTextMetrics = ctx.measureText(statsWatermarkText);

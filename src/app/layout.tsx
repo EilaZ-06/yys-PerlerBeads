@@ -14,13 +14,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "七卡瓦拼豆底稿生成器 | Perler Beads Generator",
-  description: "上传图片，调整精细度，一键生成像素画图纸，简单实用的像素画生成工具",
+  title: "阴阳师拼豆图纸生成器",
+  description: "上传阴阳师立绘，按 1、4、9 块标准 29×29 底板生成可编辑、可打印的拼豆图纸",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "拼豆生成器",
+    title: "阴阳师拼豆",
   },
   icons: {
     icon: [
@@ -47,7 +47,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="">
+    <html lang="zh-CN" className="">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100`}
       >
