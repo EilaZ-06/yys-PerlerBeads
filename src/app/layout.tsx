@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -16,7 +18,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "阴阳师拼豆图纸生成器",
   description: "上传阴阳师立绘，按 1、4、9 块标准 29×29 底板生成可编辑、可打印的拼豆图纸",
-  manifest: "/manifest.json",
+  manifest: `${basePath}/manifest.json`,
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -24,11 +26,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icon-512x512.png", sizes: "512x512", type: "image/png" },
+      { url: `${basePath}/icon-192x192.png`, sizes: "192x192", type: "image/png" },
+      { url: `${basePath}/icon-512x512.png`, sizes: "512x512", type: "image/png" },
     ],
     apple: [
-      { url: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: `${basePath}/icon-192x192.png`, sizes: "192x192", type: "image/png" },
     ],
   },
 };
